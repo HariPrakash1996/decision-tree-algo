@@ -1,0 +1,187 @@
+#                          DECISION TREE
+
+
+
+* it is one of the most algorithm
+* it is a supervised learning technique
+* it can be used for both classification and regression
+* it is a tree structure classifier
+
+
+
+# *
+
+
+* it has if_else rules based conditions of given data
+* internal nodes represent the features of dataset
+* branches represents the decision rules
+* leaf node represent the outcome
+* basically we have 2 nodes in decision tree:
+* 1.decision node
+* 2. leaf node : it is an output node it doesnot contain any further branches
+* both nodes are used to make any decisions
+* INORDER TO BUILT THE DECISION TREE ALGORITHM WE USE CART : it stands for cassification and regression tree algorithm
+
+
+#   why we use the decision tree algorithm
+
+* decision tree is AI application
+* mimic of human thinking ability while aking a decision tree like structure
+
+
+#        TERMINOLOGIES
+
+
+# 1.root node: 
+* it is a parent or child node
+* it is where the decision tree starts it represents the entire data which further gets divided into 2 or more homogeneous datasets.
+# 2. LEAF NODE:
+* final output node
+* and tree can,t be seggregated further after getting leaf nodes
+# 3.splitting:
+* it is the process of dividing the  decision node  or root node into sub nodes according to the given condition 
+
+# 4. branch or subtree:
+* a tree formed by splitting the tree is called subtree
+* the root node of the tree called parent node
+* other nodes called leaf node
+# 5.pruning:
+* it is the process of removing the unwanted branches from the tree 
+
+# how does the decision tree algorithm works
+
+
+# step 1:
+* algorithm always starts from root node
+
+# step 2 :
+* begin the tree with root node (S) contains complete dataset
+
+# step 3 :
+* find the best attribute in the dataset using asm : attribute measureemnt selection
+
+# step 4:
+* divides the (S) into subsets that contains possible values for best attribute 
+# step 5:
+* generate the decision tree nodes which contains the best attribute 
+
+
+# step 6:
+
+
+* recursively make a new decision tree using the subset 3 
+* continue this step until the a stage is raeched where u cant classified the nodes
+* its called final node as leaf node
+
+#           ASM : attribute selection measurement
+
+
+* with the help of asm we can easiy select attributes
+* asm is divided into 2 types:
+
+# 1. information gain
+# 2.gini index
+
+# how to choose the asm of given data
+
+
+* it is the measurement of changes in entropy after the segmentation of the dataset based on attributes
+* how much amount of information does each variable contributing to the model
+
+
+
+# i.g= entropy at the root node - sum of weighted entropy at each child node 
+
+
+# entropy: it measures the impurity of   a dataset  
+* its range is 0 to 1 
+* if entropy is close to 0 its a pure node
+* if entropy is close to 1 the its a impure node
+
+# gini index: its a measure of purity or impurity used whole craeting a decsion tree in the CART
+
+* an attribute with low gini index shold be returned as compared with the high gini index 
+
+
+
+import pandas as pd
+import numpy as np
+import os
+import math
+import glob
+import matplotlib.pyplot as plt
+import seaborn as sbn
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
+
+dt=pd.read_csv(r"E:\ds course\data sets\data sets from kaggle\decision_tree.csv")
+
+dt.shape
+
+dt.head(2)
+
+dt.info()
+
+dt.describe()
+
+# there is no null values in the data set
+
+dt.isnull().values.any()   
+
+
+sbn.factorplot("Entropy",data=dt,kind="count")
+
+sbn.factorplot("Variance",data=dt,kind="count")
+
+sbn.factorplot("Skewness",data=dt,kind="count")
+
+sbn.factorplot("Curtosis",data=dt,kind="count")
+
+sbn.factorplot("Class",data=dt,kind="count")
+
+dt.keys()
+
+sbn.factorplot("Skewness",data=dt,hue="Class",kind="count")
+
+x=dt.iloc[:,[0,1,2,3]]
+y=dt.iloc[:,[4]]
+
+x
+
+y
+
+# spitting the data into 2 parts by using train_test_spit train part is 80% and test part is 20%
+from sklearn.model_selection import train_test_split
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+
+len(x_train)
+
+len(x_test)
+
+# feature scaling
+
+from sklearn.preprocessing import StandardScaler
+
+scaler=StandardScaler()
+x_train=scaler.fit_transform(x_train)
+x_test=scaler.fit_transform(x_test)
+
+# fitting the decision tree classifier to training set
+
+from sklearn.tree import DecisionTreeClassifier
+
+classifier=DecisionTreeClassifier()
+classifier.fit(x_train,y_train)
+classifier.get_params()
+
+# if the difference between training accuracy and test accuracy is more than 10% then it is called over fitting
+
+
+# less than 10% it's called under fitting
+
+classifier.score(x_train,y_train)
+
+classifier.score(x_test,y_test)
+
